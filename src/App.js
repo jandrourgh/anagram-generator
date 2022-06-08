@@ -12,17 +12,21 @@ function App() {
 
   useEffect(()=>{
     const randomAnagram = (word) => {
-      const letters = word.split("")
+      const isCapitalized = word.charAt(0) === word.charAt(0).toUpperCase()
+      const letters = word.split("").map(letter=>letter.toLowerCase())
       const wordLength = letters.length
       letters.forEach((letter, i) => {
         const randomNumber = Math.floor(Math.random()*101)
         const randomIndex = Math.floor(Math.random()*wordLength)
-        if(randomNumber<=randomness){
+        if(randomNumber<randomness){
           const pivot = letters[i]
           letters[i] = letters[randomIndex]
           letters[randomIndex] = pivot
         }
       })
+      if(isCapitalized){
+        letters[0] = letters[0].toUpperCase()
+      }
       return letters.join("")
     }
 
