@@ -8,7 +8,24 @@ function App() {
   const [number, setNumber] = useState(10)
   const [keep, setKeep] = useState(true)
   const [anagrams, setAnagrams] = useState([])
+  const [randomness, setRandomness] = useState(50)
+
   useEffect(()=>{
+    const randomAnagram = (word) => {
+      const letters = word.split("")
+      const wordLength = letters.length
+      letters.forEach((letter, i) => {
+        const randomNumber = Math.floor(Math.random()*101)
+        const randomIndex = Math.floor(Math.random()*wordLength)
+        if(randomNumber<=randomness){
+          const pivot = letters[i]
+          letters[i] = letters[randomIndex]
+          letters[randomIndex] = pivot
+        }
+      })
+      return letters.join("")
+    }
+
     const emptyAnagramsArray = Array.from({length: number})
 
     if(keep){
@@ -24,10 +41,8 @@ function App() {
       })
       setAnagrams(words)
     }
-  }, [keep, word, number])
-  const randomAnagram = (word) => {
-    return word.split("").sort(() => Math.random() - 0.5).join("")
-  }
+  }, [keep, word, number, randomness])
+  
   return (
     <div className="container">
       <div className="row">
@@ -36,9 +51,14 @@ function App() {
             <label htmlFor="text" className="input-group-text">Palabros</label>
             <input type="text" onChange={(evt)=>setWord(evt.currentTarget.value)} className="form-control" value={word}/>
           </div>
+          
           <div className="input-group my-2">
             <label className="input-group-text" htmlFor="number">Cuántos quieres</label>
             <input type="number" className="form-control" value={number} onChange={(evt)=>setNumber(evt.currentTarget.value)}/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="randomness" className="form-label">Randomness: {randomness}%</label>
+            <input type="range" min="0" max="100" value={randomness} onChange={(evt)=>setRandomness(evt.currentTarget.value)}className="form-range" />
           </div>
           <div className="form-check">
             <input type="checkbox" checked={keep} className="form-check-input" onChange={(evt)=>setKeep(evt.target.checked)} />
