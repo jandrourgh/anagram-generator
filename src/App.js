@@ -8,26 +8,30 @@ function App() {
   const [number, setNumber] = useState(10)
   const [keep, setKeep] = useState(true)
   const [anagrams, setAnagrams] = useState([])
-  const [randomness, setRandomness] = useState(50)
+  const [randomness, setRandomness] = useState(10)
 
   useEffect(()=>{
     const randomAnagram = (word) => {
-      const isCapitalized = word.charAt(0) === word.charAt(0).toUpperCase()
-      const letters = word.split("").map(letter=>letter.toLowerCase())
-      const wordLength = letters.length
-      letters.forEach((letter, i) => {
-        const randomNumber = Math.floor(Math.random()*101)
-        const randomIndex = Math.floor(Math.random()*wordLength)
-        if(randomNumber<randomness){
-          const pivot = letters[i]
-          letters[i] = letters[randomIndex]
-          letters[randomIndex] = pivot
+      if(word.length){
+        const isCapitalized = word.charAt(0) === word.charAt(0).toUpperCase()
+        const letters = word.split("").map(letter=>letter.toLowerCase())
+        const wordLength = letters.length
+        letters.forEach((letter, i) => {
+          const randomNumber = Math.floor(Math.random()*101)
+          const randomIndex = Math.floor(Math.random()*wordLength)
+          if(randomNumber<randomness){
+            const pivot = letters[i]
+            letters[i] = letters[randomIndex]
+            letters[randomIndex] = pivot
+          }
+        })
+        if(isCapitalized){
+          letters[0] = letters[0].toUpperCase()
         }
-      })
-      if(isCapitalized){
-        letters[0] = letters[0].toUpperCase()
+        return letters.join("")
+      } else {
+        return ("")
       }
-      return letters.join("")
     }
 
     const emptyAnagramsArray = Array.from({length: number})
@@ -75,8 +79,10 @@ function App() {
           <ul className="list-group">
             {
               anagrams.map((anagram, i)=>{
-                if(anagrams.length){
-                  return <li className="list-group-item">{anagram}</li>
+                if(anagrams.length && anagram.length){
+                  return <li key={i} className="list-group-item">{anagram}</li>
+                } else {
+                  return <></>
                 }
               })
             }
