@@ -11,6 +11,14 @@ function App() {
   const [randomness, setRandomness] = useState(10)
 
   useEffect(()=>{
+    const isAlterable = (letters, index, randomIndex) => {
+      const unalterable = [",", ".", "(", ")", ":", ";"]
+      if(unalterable.includes(letters[index]) || unalterable.includes(letters[randomIndex])){
+        return false
+      } else {
+        return true
+      }
+    }
     const randomAnagram = (word) => {
       if(word.length){
         const isCapitalized = word.charAt(0) === word.charAt(0).toUpperCase()
@@ -19,7 +27,7 @@ function App() {
         letters.forEach((letter, i) => {
           const randomNumber = Math.floor(Math.random()*101)
           const randomIndex = Math.floor(Math.random()*wordLength)
-          if(randomNumber<randomness){
+          if(randomNumber<randomness && isAlterable(letters, i, randomIndex)){
             const pivot = letters[i]
             letters[i] = letters[randomIndex]
             letters[randomIndex] = pivot
@@ -38,8 +46,7 @@ function App() {
 
     if(keep){
       const words = emptyAnagramsArray.map(anagram=>{
-        const singleWords = word.split(/[.,:]?\s/g).map(singleWord=>randomAnagram(singleWord))
-        console.log(singleWords)
+        const singleWords = word.split(" ").map(singleWord=>randomAnagram(singleWord))
         return singleWords.join(" ")
       })
       setAnagrams(words)
