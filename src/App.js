@@ -194,24 +194,27 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="row my-2">
-        <div className="col-12">
-          <ul className="list-group">
-            {anagrams.length ? (
-              anagrams.map((anagram, i) =>
-                anagram.length ? (
-                  <li key={i} className="list-group-item">
-                    {anagram}
-                  </li>
-                ) : (
-                  <span key={i}></span>
+      <div className="container my-2">
+        <div className="row">
+          <div className="col-12">
+            <ul className="list-group">
+              {anagrams.length ? (
+                anagrams.map((anagram, i) =>
+                  anagram.length ? (
+                    <li key={i} className="list-group-item">
+                      {anagram}
+                    </li>
+                  ) : (
+                    <span key={i}></span>
+                  )
                 )
-              )
-            ) : (
-              <></>
-            )}
-          </ul>
+              ) : (
+                <></>
+              )}
+            </ul>
+          </div>
         </div>
+
       </div>
       <footer className="footer mt-auto py-3 bg-light text-center">
           <span className="text-muted">wasabi</span>
