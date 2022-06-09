@@ -217,7 +217,7 @@ function App() {
 
       </div>
       <footer className="footer mt-auto py-3 bg-light text-center">
-          <span className="text-muted">wasabi</span>
+          <p className="text-muted">wasabi</p>
       </footer>
     </div>
   );
