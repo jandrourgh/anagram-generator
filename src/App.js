@@ -10,30 +10,33 @@ function App() {
   const [anagrams, setAnagrams] = useState([])
   const [randomness, setRandomness] = useState(10)
   const [consonantsOnly, setConsonantsOnly] = useState(false)
+  const [vowelsOnly, setVowelsOnly] = useState(false)
 
   useEffect(()=>{
     const isAlterable = (letters, index, randomIndex) => {
       const punctMarks = [",", ".", "(", ")", ":", ";"]
       const consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "ñ", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]
       const vowels = ["a", "e", "i", "o", "u"]
-      let keep
-      if(consonantsOnly) {
-        keep = vowels
-      } else {
-        keep = consonants
-      }
       
       if(punctMarks.includes(letters[index]) || punctMarks.includes(letters[randomIndex])){
         return false
       } else {
-        if(consonantsOnly){
-          if(keep.includes(letters[index]) || keep.includes(letters[randomIndex])){
-            return false
-          } else {
+        if(consonants.includes(letters[index]) && consonants.includes(letters[randomIndex])){
+          if(consonantsOnly){
             return true
+          } else {
+            return false
+          }
+        } else if (vowels.includes(letters[index]) && vowels.includes(letters[randomIndex])){
+          if(vowelsOnly){
+            return true
+          } else {
+            return false
           }
         } else {
-          return true
+          if(!vowelsOnly && !consonantsOnly){
+            return true
+          }
         }
       }
     }
@@ -74,7 +77,7 @@ function App() {
       })
       setAnagrams(words)
     }
-  }, [keep, word, number, randomness, consonantsOnly])
+  }, [keep, word, number, randomness, consonantsOnly, vowelsOnly])
   
   return (
     <div className="container">
@@ -100,6 +103,10 @@ function App() {
           <div className="form-check">
             <input type="checkbox" checked={consonantsOnly} className="form-check-input" onChange={(evt)=>setConsonantsOnly(evt.target.checked)} />
             <label htmlFor="" className="form-check-label" >Intercambiar consonantes entre sí</label>
+          </div>
+          <div className="form-check">
+            <input type="checkbox" checked={vowelsOnly} className="form-check-input" onChange={(evt)=>setVowelsOnly(evt.target.checked)} />
+            <label htmlFor="" className="form-check-label" >Intercambiar vocales entre sí</label>
           </div>
         </div>
       </div>
