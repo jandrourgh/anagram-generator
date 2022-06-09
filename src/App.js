@@ -9,14 +9,32 @@ function App() {
   const [keep, setKeep] = useState(true)
   const [anagrams, setAnagrams] = useState([])
   const [randomness, setRandomness] = useState(10)
+  const [consonantsOnly, setConsonantsOnly] = useState(false)
 
   useEffect(()=>{
     const isAlterable = (letters, index, randomIndex) => {
-      const unalterable = [",", ".", "(", ")", ":", ";"]
-      if(unalterable.includes(letters[index]) || unalterable.includes(letters[randomIndex])){
+      const punctMarks = [",", ".", "(", ")", ":", ";"]
+      const consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "ñ", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]
+      const vowels = ["a", "e", "i", "o", "u"]
+      let keep
+      if(consonantsOnly) {
+        keep = vowels
+      } else {
+        keep = consonants
+      }
+      
+      if(punctMarks.includes(letters[index]) || punctMarks.includes(letters[randomIndex])){
         return false
       } else {
-        return true
+        if(consonantsOnly){
+          if(keep.includes(letters[index]) || keep.includes(letters[randomIndex])){
+            return false
+          } else {
+            return true
+          }
+        } else {
+          return true
+        }
       }
     }
     const randomAnagram = (word) => {
@@ -56,7 +74,7 @@ function App() {
       })
       setAnagrams(words)
     }
-  }, [keep, word, number, randomness])
+  }, [keep, word, number, randomness, consonantsOnly])
   
   return (
     <div className="container">
@@ -78,6 +96,10 @@ function App() {
           <div className="form-check">
             <input type="checkbox" checked={keep} className="form-check-input" onChange={(evt)=>setKeep(evt.target.checked)} />
             <label htmlFor="" className="form-check-label" >Mantener palabras separadas</label>
+          </div>
+          <div className="form-check">
+            <input type="checkbox" checked={consonantsOnly} className="form-check-input" onChange={(evt)=>setConsonantsOnly(evt.target.checked)} />
+            <label htmlFor="" className="form-check-label" >Intercambiar consonantes entre sí</label>
           </div>
         </div>
       </div>
